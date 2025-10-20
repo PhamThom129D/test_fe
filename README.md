@@ -1,6 +1,5 @@
 Dự án React quản lý danh sách với **chức năng CRUD**, sử dụng **Material UI**, **axios** và **mock API (`json-server`)**.
 
-
 ## 🛠️ Yêu cầu
 
 - Node.js >= 18

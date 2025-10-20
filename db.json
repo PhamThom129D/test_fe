@@ -1,61 +1,62 @@
 {
   "users": [
     {
-      "id": 1,
-      "name": "Nguyễn Văn A",
+      "id": "1",
+      "name": "Nguyễn Văn Anh",
       "email": "nguyenvana@gmail.com",
-      "avatar": "https://i.pravatar.cc/150?img=1"
+      "avatar": "https://i.pravatar.cc/150?img=1",
+      "avatarFile": {}
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Trần Thị B",
       "email": "tranthib@example.com",
       "avatar": "https://i.pravatar.cc/150?img=2"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Lê Minh C",
       "email": "leminhc@example.com",
       "avatar": "https://i.pravatar.cc/150?img=3"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Phạm Hữu D",
       "email": "phamhuud@example.com",
       "avatar": "https://i.pravatar.cc/150?img=4"
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Đỗ Mai E",
       "email": "domaie@example.com",
       "avatar": "https://i.pravatar.cc/150?img=5"
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Hoàng Gia F",
       "email": "hoanggiaf@example.com",
       "avatar": "https://i.pravatar.cc/150?img=6"
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "Lý Quốc G",
       "email": "lyquocg@example.com",
       "avatar": "https://i.pravatar.cc/150?img=7"
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "Bùi Anh H",
       "email": "buianhh@example.com",
       "avatar": "https://i.pravatar.cc/150?img=8"
     },
     {
-      "id": 9,
+      "id": "9",
       "name": "Trịnh Thanh I",
       "email": "trinhanhi@example.com",
       "avatar": "https://i.pravatar.cc/150?img=9"
     },
     {
-      "id": 10,
+      "id": "10",
       "name": "Võ Đức K",
       "email": "voduck@example.com",
       "avatar": "https://i.pravatar.cc/150?img=10"
@@ -67,7 +68,7 @@
       "avatarFile": {
         "0": {}
       },
-      "id": 11
+      "id": "11"
     },
     {
       "name": "TestImnAGE",
@@ -76,7 +77,7 @@
       "avatarFile": {
         "0": {}
       },
-      "id": 12
+      "id": "12"
     },
     {
       "name": "TestImnAGE",
@@ -85,7 +86,7 @@
       "avatarFile": {
         "0": {}
       },
-      "id": 13
+      "id": "13"
     },
     {
       "name": "product9",
@@ -94,7 +95,7 @@
       "avatarFile": {
         "0": {}
       },
-      "id": 14
+      "id": "14"
     }
   ]
 }

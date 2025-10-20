@@ -40,8 +40,8 @@ export default function UserTable({ users, onEdit, onDelete, page, rowsPerPage, 
                       <img
                         src={u.avatar}
                         alt={u.name}
-                        width={40}
-                        height={40}
+                        width={90}
+                        height={90}
                         style={{ borderRadius: "50%", objectFit: "cover" }}
                       />
                     </TableCell>
