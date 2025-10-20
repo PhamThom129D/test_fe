@@ -1,20 +1,5 @@
 Dự án React quản lý danh sách với **chức năng CRUD**, sử dụng **Material UI**, **axios** và **mock API (`json-server`)**.
 
-## 📁 Cấu trúc dự án
-
-project-root/
-│
-├─ src/
-│ ├─ components/
-│ │ └─ Layout.js
-│ ├─ pages/
-│ │ └─ Page.js
-│ ├─ services/
-│ │ └─ api.js
-│ └─ App.js
-├─ db.json
-├─ package.json
-└─ README.md
 
 ## 🛠️ Yêu cầu
 
