@@ -1,41 +1,136 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
-import Layout from "./components/Layout";
-import UserPage from "./pages/Page";
+import React, { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Container,
+  Typography,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
+import { toursService } from "./services/api";
+import ProductTable from "./components/demo/ProductTable";
+import ProductForm from "./components/demo/ProductForm";
+import ProductDetail from "./components/demo/ProductDetail";
 
 export default function App() {
-  const [mode, setMode] = useState("light");
+  const [tours, setTours] = useState([]);
+  const [editTour, setEditTour] = useState(null);
+  const [detailTour, setDetailTour] = useState(null);
+  const [openFormDialog, setOpenFormDialog] = useState(false);
+  const [openDetailDialog, setOpenDetailDialog] = useState(false);
 
-  useEffect(() => {
-    const savedMode = localStorage.getItem("themeMode") || "light";
-    setMode(savedMode);
-  }, []);
-
-  const toggleMode = () => {
-    const newMode = mode === "light" ? "dark" : "light";
-    setMode(newMode);
-    localStorage.setItem("themeMode", newMode);
+  const loadData = async () => {
+    const res = await toursService.getAll();
+    setTours(res.data);
   };
 
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-          ...(mode === "light"
-            ? { background: { default: "#f4f6f8" } }
-            : { background: { default: "#121212" } }),
-        },
-      }),
-    [mode]
-  );
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const handleAddOrUpdate = async (tour) => {
+    if (tour.id) {
+      await toursService.update(tour.id, tour);
+    } else {
+      await toursService.create(tour);
+    }
+    setOpenFormDialog(false);
+    setEditTour(null);
+    loadData();
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Bạn có chắc muốn xóa?")) {
+      await toursService.remove(id);
+      loadData();
+    }
+  };
+
+  const handleAdd = () => {
+    setEditTour(null);
+    setOpenFormDialog(true);
+  };
+
+  const handleEdit = (t) => {
+    setEditTour(t);
+    setOpenFormDialog(true);
+  };
+
+  const handleDetail = (t) => {
+    setDetailTour(t);
+    setOpenDetailDialog(true);
+  };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Layout toggleMode={toggleMode} mode={mode}>
-        <UserPage />
-      </Layout>
-    </ThemeProvider>
+    <Container sx={{ py: 4 }}>
+      <Typography variant="h4" fontWeight="bold" textAlign="center" gutterBottom>
+        Quản lý tours du lịch
+      </Typography>
+
+      <ProductTable
+        products={tours}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onAdd={handleAdd}
+        onDetail={handleDetail}
+      />
+
+      {/* Dialog thêm / sửa */}
+      <Dialog
+        open={openFormDialog}
+        onClose={() => setOpenFormDialog(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          {editTour ? "Sửa thông tin tour du lịch" : "Thêm tour du lịch"}
+          <IconButton onClick={() => setOpenFormDialog(false)}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <ProductForm onSubmit={handleAddOrUpdate} productEdit={editTour} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog xem chi tiết */}
+      <Dialog
+        open={openDetailDialog}
+        onClose={() => setOpenDetailDialog(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+        
+          <IconButton onClick={() => setOpenDetailDialog(false)}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          {detailTour ? (
+            <ProductDetail
+              productDetail={detailTour}
+              onClose={() => setOpenDetailDialog(false)}
+            />
+          ) : (
+            <Typography>Không có thông tin tour</Typography>
+          )}
+        </DialogContent>
+      </Dialog>
+    </Container>
   );
 }

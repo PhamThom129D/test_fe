@@ -1,83 +1,23 @@
-Dự án React quản lý danh sách với **chức năng CRUD**, sử dụng **Material UI**, **axios** và **mock API (`json-server`)**.
-
-## 🛠️ Yêu cầu
-
-- Node.js >= 18
-- npm >= 9
-- json-server (cài toàn cục hoặc local)
-
----
-
-## ⚡ Cài đặt dự án
-
-1. Clone repo hoặc copy source code:
-   git clone <repo-url>
-   cd <project-folder>
-
-2. Cài dependencies:
-   npm install
-
-- Cài json-server (nếu chưa có):
-  npm install -g json-server
-
-📝 Tạo mock API
-
-- Tạo file db.json ở root project:
-
+The server listens at port 3000
+APIs
+Tuor model
 {
-"users": [
-{
-"id": 1,
-"name": "Nguyễn Văn A",
-"email": "nguyenvana@gmail.com",
-"avatar": "https://i.pravatar.cc/150?img=1"
-},
-{
-"id": 2,
-"name": "Trần Thị B",
-"email": "tranthib@example.com",
-"avatar": "https://i.pravatar.cc/150?img=2"
+id: 1,
+title: 'Sapa',
+price: '2000000',
+description: 'Sa Pa là một điểm du lịch cách trung tâm thành phố Lào Cai khoảng hơn 30 km. Nằm ở độ cao trung bình 1500 – 1800 m so với mặt nước biển, Thị Trấn Sapa luôn chìm trong làn mây bồng bềnh, tạo nên một bức tranh huyền ảo đẹp đến kỳ lạ. Nơi đây, có thứ tài nguyên vô giá đó là khí hậu quanh năm trong lành mát mẻ, với nhiệt độ trung bình 15-18°C.'
 }
-]
-}
+Getting all tuors
+GET http://localhost:3000/tuors
 
-- Chạy server:
+Getting a tuor by id
+GET http://localhost:3000/tuors/1
 
-json-server --watch db.json --port 3001
-Endpoints:
+Creating a tuor
+POST http://localhost:3000/tuors
 
-GET /users → Lấy danh sách người dùng
+Deleting a tuor by id
+DELETE http://localhost:3000/tuors/1
 
-POST /users → Thêm người dùng mới
-
-PUT /users/:id → Cập nhật người dùng
-
-DELETE /users/:id → Xóa người dùng
-
-⚠️ Lưu ý: json-server phải chạy trước khi khởi động React app.
-
-🚀 Chạy dự án React
-npm start
-Mở trình duyệt: http://localhost:3000
-
-Dữ liệu người dùng được load từ mock API
-
-Hỗ trợ chế độ sáng/tối với theme lưu trong localStorage
-
-🖥️ Hướng dẫn sử dụng giao diện CRUD
-
-1. Xem danh sách người dùng
-   Mở trang chính, danh sách người dùng sẽ hiển thị trong bảng.
-
-2. Thêm người dùng
-   Click nút Thêm → Modal form hiện ra → Nhập ảnh, tên và email → Nhấn Lưu.
-
-Dữ liệu sẽ được gửi POST tới /users và cập nhật danh sách.
-
-3. Sửa người dùng
-   Click nút Sửa ở hàng người dùng → Modal form mở → Chỉnh sửa thông tin → Nhấn Lưu.
-
-Dữ liệu sẽ được gửi PUT tới /users/:id và cập nhật.
-
-4. Xóa người dùng
-   Click nút Xóa → Xác nhận → Dữ liệu sẽ gửi DELETE tới /users/:id và bảng cập nhật.
+Updating a tuor by id
+PUT http://localhost:3000/tuors/1
