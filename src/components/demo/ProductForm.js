@@ -3,7 +3,7 @@ import {
   TextField,
   Button,
   Box,
-  Typography,
+ 
   Paper,
   Stack,
   Snackbar,
@@ -12,9 +12,8 @@ import {
 
 export default function ProductForm({ onSubmit, productEdit, onClose }) {
   const [form, setForm] = useState({
-    name: "",
+    title: "",
     price: "",
-    stock: "",
     description: "",
   });
 
@@ -30,12 +29,10 @@ export default function ProductForm({ onSubmit, productEdit, onClose }) {
   };
 
   const validate = () => {
-    if (!form.name.trim()) return "Tên sản phẩm không được để trống.";
-    if (form.name.length < 2) return "Tên sản phẩm phải có ít nhất 2 ký tự.";
+    if (!form.title.trim()) return "Tên du lịch không được để trống.";
+    if (form.title.length < 2) return "Tên du lịch phải có ít nhất 2 ký tự.";
     if (!form.price || isNaN(form.price) || form.price <= 0)
-      return "Giá sản phẩm phải là số dương.";
-    if (!form.stock || isNaN(form.stock) || form.stock < 0)
-      return "Tồn kho không hợp lệ (≥ 0).";
+      return "Giá du lịch phải là số dương.";
     if (!form.description.trim() || form.description.length < 5)
       return "Mô tả phải có ít nhất 5 ký tự.";
     return null;
@@ -51,7 +48,7 @@ export default function ProductForm({ onSubmit, productEdit, onClose }) {
     }
 
     onSubmit(form);
-    setForm({ name: "", price: "", stock: "", description: "" });
+    setForm({ title: "", price: "", description: "" });
     if (onClose) onClose();
   };
 
@@ -61,7 +58,7 @@ export default function ProductForm({ onSubmit, productEdit, onClose }) {
       sx={{
         p: 4,
         borderRadius: 3,
-        maxWidth: 480,
+        maxWidth: 680,
         mx: "auto",
         background: (theme) =>
           theme.palette.mode === "light" ? "#fff" : "#1e1e1e",
@@ -72,9 +69,9 @@ export default function ProductForm({ onSubmit, productEdit, onClose }) {
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <TextField
-            label="Tên sản phẩm"
-            name="name"
-            value={form.name}
+            label="Tên du lịch"
+            name="title"
+            value={form.title}
             onChange={handleChange}
             required
             fullWidth
@@ -91,16 +88,6 @@ export default function ProductForm({ onSubmit, productEdit, onClose }) {
             inputProps={{ min: 0 }}
           />
 
-          <TextField
-            label="Tồn kho"
-            name="stock"
-            value={form.stock}
-            onChange={handleChange}
-            type="number"
-            required
-            fullWidth
-            inputProps={{ min: 0 }}
-          />
 
           <TextField
             label="Mô tả"
@@ -108,7 +95,7 @@ export default function ProductForm({ onSubmit, productEdit, onClose }) {
             value={form.description}
             onChange={handleChange}
             multiline
-            rows={3}
+            rows={6}
             fullWidth
             required
           />
@@ -120,23 +107,24 @@ export default function ProductForm({ onSubmit, productEdit, onClose }) {
               color="primary"
               sx={{ px: 4, borderRadius: 2, fontWeight: "bold" }}
             >
-              💾 {productEdit ? "Cập nhật" : "Lưu"}
+              {productEdit ? "Sửa" : "Thêm mới"}
             </Button>
-            {onClose && (
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={onClose}
-                sx={{ px: 4, borderRadius: 2 }}
-              >
-                Hủy
-              </Button>
-            )}
+          {onClose && (
+               <Box textAlign="center" mt={4}>
+                 <Button
+                   variant="contained"
+                   color="primary"
+                   onClick={!onClose}
+                   sx={{ px: 4, borderRadius: 2 }}
+                 >
+                   Đóng
+                 </Button>
+               </Box>
+             )}
           </Stack>
         </Stack>
       </Box>
 
-      {/* Snackbar hiển thị lỗi */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={3000}

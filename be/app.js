@@ -9,102 +9,85 @@ app.listen(3001, () => {
   console.log("✅ Server running on http://localhost:3001");
 });
 
-const products = [
-  {
-    id: 1,
-    name: "Áo sơ mi dài tay nam",
-    price: "795000",
-    stock: 100,
-    description: "Áo sơ mi dài tay phom Regular fit suông nhẹ nhưng vẫn đảm bảo vừa vặn, chỉn chu khi mặc.",
-  },
-  {
-    id: 2,
-    name: "Áo polo nam",
-    price: "550000",
-    stock: 200,
-    description: "Áo Polo phom dáng Regular fit suông nhẹ nhưng vẫn vừa vặn, tôn dáng tối đa khi mặc.",
-  },
-  {
-    id: 3,
-    name: "Áo polo nam",
-    price: "550000",
-    stock: 200,
-    description: "Áo Polo phom dáng Regular fit suông nhẹ nhưng vẫn vừa vặn, tôn dáng tối đa khi mặc.",
-  },
-  {
-    id: 4,
-    name: "Áo polo nam",
-    price: "550000",
-    stock: 200,
-    description: "Áo Polo phom dáng Regular fit suông nhẹ nhưng vẫn vừa vặn, tôn dáng tối đa khi mặc.",
-  },
-  {
-    id: 5,
-    name: "Áo polo nam",
-    price: "550000",
-    stock: 200,
-    description: "Áo Polo phom dáng Regular fit suông nhẹ nhưng vẫn vừa vặn, tôn dáng tối đa khi mặc.",
-  },
-  {
-    id: 6,
-    name: "Áo polo nam",
-    price: "550000",
-    stock: 200,
-    description: "Áo Polo phom dáng Regular fit suông nhẹ nhưng vẫn vừa vặn, tôn dáng tối đa khi mặc.",
-  },
+const tuors = [
+    {
+        id: 1,
+        title: 'Sapa',
+        price: '2000000',
+        description: 'Sa Pa là một điểm du lịch cách trung tâm thành phố Lào Cai khoảng hơn 30 km. Nằm ở độ cao trung bình 1500 – 1800 m so với mặt nước biển, Thị Trấn Sapa luôn chìm trong làn mây bồng bềnh, tạo nên một bức tranh huyền ảo đẹp đến kỳ lạ. Nơi đây, có thứ tài nguyên vô giá đó là khí hậu quanh năm trong lành mát mẻ, với nhiệt độ trung bình 15-18°C.'
+    },
+    {
+        id: 2,
+        title: 'Ninh Bình',
+        price: '1600000',
+        description: 'Ninh binh là vùng đất có bề dày về lịch sử văn hóa lâu đời, tỉnh Ninh bình có rất nhiều tiềm năng về du lịch đối với du khách trong nước cũng như du khách quốc tế với rất nhiều địa danh đã và đang được bảo tồn rất tốt.'
+    },
+    {
+        id: 3,
+        title: 'Hà Giang',
+        price: '1600000',
+        description: 'Hà Giang là một tỉnh thuộc vùng Đông Bắc Việt Nam. Phía Đông giáp tỉnh Cao Bằng, phía Tây giáp tỉnh Yên Bái và Lào Cai, phía Nam giáp tỉnh Tuyên Quang phía Bắc giáp nước Cộng hòa Nhân dân Trung Hoa. Hà Giang có diện tích tự nhiên là 7.884,37 km2, trong đó theo đường chim bay, chỗ rộng nhất từ tây sang đông dài 115 km và từ bắc xuống nam dài 137 km.'
+    },
+    {
+        id: 4,
+        title: 'Quy Nhơn',
+        price: '10000000',
+        description: 'Là một trong những thành phố biển đẹp nhất Nam Trung Bộ với nhiều bãi tắm lý tưởng như Cát Tiến, Nhơn Hội, Hải Giang. Đến đây du khách có thể hòa mình vào cảnh sắc thiên nhiên hùng vĩ, biển cả bao la với những cồn cát, hải đảo ngập tràn gió lộng, xen vào những bãi biển lấp lánh cát vàng.'
+    },
 ];
 
-function findProductIndex(id) {
-  for (let i = 0; i < products.length; i++) {
-    if (products[i].id === id) return i;
-  }
-  return -1;
+app.get("/tuors", (req, res) => {
+    res.json(tuors);
+});
+app.get("/tuors/:id", (req, res) => {
+    const id = +req.params.id;
+    const index = findTuorIndex(id);
+    if(index !== -1) {
+        res.json(tuors[index]);
+    } else {
+        res.status(404).json({message: 'Not found'});
+    }
+});
+app.post("/tuors", (req, res) => {
+    const tuor = {
+        id: (new Date()).getTime(),
+        title: req.body.title,
+        price: req.body.price,
+        description: req.body.description
+    };
+    tuors.push(tuor);
+    res.json(tuor);
+});
+app.delete("/tuors/:id", (req, res) => {
+    const id = +req.params.id;
+    const index = findTuorIndex(id);
+    if(index !== -1) {
+        tuors.splice(index, 1);
+        res.json({message: 'tuor deleted', id: id});
+    } else {
+        res.status(404).json({message: 'Not found'});
+    }
+});
+
+app.put("/tuors/:id", (req, res) => {
+    const id = +req.params.id;
+    const index = findTuorIndex(id);
+    if(index !== -1) {
+        const tuor = tuors[index];
+        tuor.title = req.body.title;
+        tuor.price = req.body.price;
+        tuor.description = req.body.description;
+        res.json(tuor);
+    } else {
+        res.status(404).json({message: 'Not found'});
+    }
+});
+
+function findTuorIndex(id) {
+    for(let i = 0; i < tuors.length; i++) {
+        if(tuors[i].id === id) {
+            return i;
+        }
+    }
+    return -1;
 }
-
-// Lấy danh sách
-app.get("/products", (req, res) => res.json(products));
-
-// Lấy chi tiết
-app.get("/products/:id", (req, res) => {
-  const id = +req.params.id;
-  const index = findProductIndex(id);
-  if (index !== -1) res.json(products[index]);
-  else res.status(404).json({ message: "Không tìm thấy sản phẩm" });
-});
-
-// Thêm
-app.post("/products", (req, res) => {
-  const product = {
-    id: new Date().getTime(),
-    name: req.body.name,
-    price: req.body.price,
-    stock: req.body.stock,
-    description: req.body.description,
-  };
-  products.push(product);
-  res.json(product);
-});
-
-// Cập nhật
-app.put("/products/:id", (req, res) => {
-  const id = +req.params.id;
-  const index = findProductIndex(id);
-  if (index !== -1) {
-    products[index] = { id, ...req.body };
-    res.json(products[index]);
-  } else {
-    res.status(404).json({ message: "Không tìm thấy sản phẩm" });
-  }
-});
-
-// Xóa
-app.delete("/products/:id", (req, res) => {
-  const id = +req.params.id;
-  const index = findProductIndex(id);
-  if (index !== -1) {
-    products.splice(index, 1);
-    res.json({ message: "Đã xóa sản phẩm" });
-  } else {
-    res.status(404).json({ message: "Không tìm thấy sản phẩm" });
-  }
-});
