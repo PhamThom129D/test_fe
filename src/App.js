@@ -1,41 +1,86 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
-import Layout from "./components/Layout";
-import UserPage from "./pages/Page";
+import React, { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Container,
+  Typography,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
+import { productService } from "./services/api";
+import ProductTable from "./components/demo/ProductTable";
+import ProductForm from "./components/demo/ProductForm";
+
 
 export default function App() {
-  const [mode, setMode] = useState("light");
+  const [products, setProducts] = useState([]);
+  const [editProduct, setEditProduct] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
-  useEffect(() => {
-    const savedMode = localStorage.getItem("themeMode") || "light";
-    setMode(savedMode);
-  }, []);
-
-  const toggleMode = () => {
-    const newMode = mode === "light" ? "dark" : "light";
-    setMode(newMode);
-    localStorage.setItem("themeMode", newMode);
+  const loadData = async () => {
+    const res = await productService.getAll();
+    setProducts(res.data);
   };
 
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-          ...(mode === "light"
-            ? { background: { default: "#f4f6f8" } }
-            : { background: { default: "#121212" } }),
-        },
-      }),
-    [mode]
-  );
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const handleAddOrUpdate = async (product) => {
+    if (product.id) {
+      await productService.update(product.id, product);
+    } else {
+      await productService.create(product);
+    }
+    setOpenDialog(false);
+    setEditProduct(null);
+    loadData();
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Bạn có chắc muốn xóa?")) {
+      await productService.remove(id);
+      loadData();
+    }
+  };
+
+  const handleAdd = () => {
+    setEditProduct(null);
+    setOpenDialog(true);
+  };
+
+  const handleEdit = (p) => {
+    setEditProduct(p);
+    setOpenDialog(true);
+  };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Layout toggleMode={toggleMode} mode={mode}>
-        <UserPage />
-      </Layout>
-    </ThemeProvider>
+    <Container sx={{ py: 4 }}>
+      <Typography variant="h4" fontWeight="bold" textAlign="center" gutterBottom>
+        🛍️ Quản lý sản phẩm
+      </Typography>
+
+      <ProductTable
+        products={products}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onAdd={handleAdd}
+      />
+
+      {/* Pop-up form thêm/sửa */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          {editProduct ? "✏️ Sửa sản phẩm" : "➕ Thêm sản phẩm"}
+          <IconButton onClick={() => setOpenDialog(false)}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <ProductForm onSubmit={handleAddOrUpdate} productEdit={editProduct} />
+        </DialogContent>
+      </Dialog>
+    </Container>
   );
 }
